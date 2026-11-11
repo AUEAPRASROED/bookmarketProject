@@ -27,7 +27,7 @@ function Navbar() {
           <NavLink to="/" end className={linkClass}>หน้าแรก</NavLink>
           <NavLink to="/books" className={linkClass}>หนังสือ</NavLink>
           {/* เมนูสมาชิกโผล่เมื่อ login แล้วเท่านั้น แต่หน้าเหล่านี้ยังมี ProtectedRoute และ Go ตรวจตั๋วอีกชั้น */}
-          {isLoggedIn && <NavLink to="/me/books" className={linkClass}>ประกาศของฉัน</NavLink>}
+          {isLoggedIn && <NavLink to="/me/books" className={linkClass}>สินค้าของฉัน</NavLink>}
           {isLoggedIn && <NavLink to="/me/incoming" className={linkClass}>คำขอที่เข้ามา</NavLink>}
           {isLoggedIn && <NavLink to="/me/requests" className={linkClass}>คำขอซื้อของฉัน</NavLink>}
           {isAdmin && <NavLink to="/admin" className={linkClass}>หลังบ้าน</NavLink>}

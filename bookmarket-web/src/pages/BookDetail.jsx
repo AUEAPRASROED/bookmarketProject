@@ -146,7 +146,7 @@ function BookDetail() {
   } else if (isOwner) {
     action = (
       <p className="text-sm text-slate-600">
-        นี่คือประกาศของคุณ <Link to={`/me/books/${book.id}`} className="font-medium text-emerald-600 hover:underline">แก้ไขประกาศ</Link>
+        นี่คือสินค้าของคุณ <Link to={`/me/books/${book.id}`} className="font-medium text-emerald-600 hover:underline">แก้ไขสินค้า</Link>
       </p>
     );
   } else if (book.status !== 'available') {
