@@ -10,8 +10,10 @@ import (
 )
 
 type SellerInfo struct {
-    ID          int64  `json:"id"`
-    DisplayName string `json:"displayName"` // เปิดเผยแค่ชื่อที่แสดง ช่องติดต่อเห็นได้หลังยอมรับคำขอเท่านั้น
+    ID          int64    `json:"id"`
+    DisplayName string   `json:"displayName"` // เปิดเผยแค่ชื่อที่แสดง ช่องติดต่อเห็นได้หลังยอมรับคำขอเท่านั้น
+    Rating      *float64 `json:"rating"`      // คะแนนรีวิวร้านเฉลี่ย 1-5 (null = ยังไม่มีรีวิว)
+    ReviewCount int64    `json:"reviewCount"`
 }
 
 type Book struct {
@@ -44,6 +46,8 @@ type BookInput struct {
 // bookSelect คอลัมน์ชุดเดียวกันทุกคำสั่งที่อ่านหนังสือ ลำดับต้องตรงกับ Scan ใน scanBook
 const bookSelect = `SELECT b.id, b.title, b.author, b.description, b.condition, b.price::float8,
                            b.image_url, b.status, b.category_id, c.name, m.id, m.display_name,
+                           (SELECT round(avg(sr.rating), 1)::float8 FROM seller_reviews sr WHERE sr.seller_id = m.id),
+                           (SELECT count(*) FROM seller_reviews sr WHERE sr.seller_id = m.id),
                            b.created_at, b.updated_at
                     FROM books b
                     JOIN categories c ON c.id = b.category_id
@@ -58,7 +62,7 @@ func scanBook(row scanner) (Book, error) {
     var b Book
     err := row.Scan(&b.ID, &b.Title, &b.Author, &b.Description, &b.Condition, &b.Price,
         &b.ImageURL, &b.Status, &b.CategoryID, &b.Category, &b.Seller.ID, &b.Seller.DisplayName,
-        &b.CreatedAt, &b.UpdatedAt)
+        &b.Seller.Rating, &b.Seller.ReviewCount, &b.CreatedAt, &b.UpdatedAt)
     return b, err
 }
 
@@ -90,6 +94,12 @@ func (s *Store) ListBooks(ctx context.Context, q string) ([]Book, error) {
 // ListBooksBySeller ประกาศของฉัน ทุกสถานะ
 func (s *Store) ListBooksBySeller(ctx context.Context, sellerID int64) ([]Book, error) {
     return s.queryBooks(ctx, bookSelect+`WHERE b.seller_id = $1 ORDER BY b.created_at DESC, b.id DESC`, sellerID)
+}
+
+// ListPublicBooksBySeller หนังสือในหน้าร้าน: เฉพาะเล่มที่ยังขายอยู่หรือติดจอง
+func (s *Store) ListPublicBooksBySeller(ctx context.Context, sellerID int64) ([]Book, error) {
+    return s.queryBooks(ctx, bookSelect+
+        `WHERE b.seller_id = $1 AND b.status IN ('available', 'reserved') ORDER BY b.created_at DESC, b.id DESC`, sellerID)
 }
 
 // ListAllBooks สำหรับ admin ทุกเล่มทุกสถานะ

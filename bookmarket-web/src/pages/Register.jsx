@@ -28,7 +28,8 @@ function Register() {
   }
 
   return (
-    <div className="mx-auto max-w-sm px-4 py-12">
+    <div className="mx-auto max-w-md px-4 py-14">
+      <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
       <h1 className="text-2xl font-semibold text-slate-900">สมัครสมาชิก</h1>
       <form onSubmit={handleSubmit} className="mt-6 space-y-3">
         <input value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder="ชื่อที่แสดง" required maxLength={50} className={inputClass} />
@@ -45,6 +46,7 @@ function Register() {
       <p className="mt-6 text-sm text-slate-500">
         มีบัญชีแล้ว? <Link to="/login" className="text-emerald-600 hover:underline">เข้าสู่ระบบ</Link>
       </p>
+      </div>
     </div>
   );
 }

@@ -65,17 +65,24 @@ function MyRequests() {
       {status === 'success' && requests.length > 0 && (
         <ul className="space-y-3">
           {requests.map(r => (
-            <li key={r.id} className="rounded-xl border border-emerald-100 bg-white p-4">
+            <li key={r.id} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
               <div className="flex flex-wrap items-start justify-between gap-2">
                 <div>
                   <Link to={`/books/${r.book.id}`} className="font-medium text-slate-900 hover:text-emerald-600">{r.book.title}</Link>
-                  <p className="text-sm text-slate-500">{formatPrice(r.book.price)} | ผู้ขาย {r.seller.displayName} | ส่งเมื่อ {dateTH(r.createdAt)}</p>
+                  <p className="text-sm text-slate-500">
+                    {formatPrice(r.book.price)} | ผู้ขาย <Link to={`/sellers/${r.seller.id}`} className="hover:text-emerald-600 hover:underline">{r.seller.displayName}</Link> | ส่งเมื่อ {dateTH(r.createdAt)}
+                  </p>
                 </div>
                 <StatusBadge kind="request" status={r.status} />
               </div>
               {r.message && <p className="mt-2 text-sm text-slate-600">ข้อความของฉัน: {r.message}</p>}
               {r.seller.contact && (
                 <p className="mt-2 rounded-lg bg-emerald-50 px-3 py-2 text-sm text-emerald-800">ติดต่อผู้ขาย: {r.seller.contact}</p>
+              )}
+              {r.status === 'completed' && (
+                <Link to={`/sellers/${r.seller.id}`} className="mt-3 inline-block text-sm font-medium text-amber-600 hover:underline">
+                  ⭐ รีวิวร้านของ {r.seller.displayName}
+                </Link>
               )}
               {(r.status === 'pending' || r.status === 'accepted') && (
                 <button onClick={() => setTarget(r)} className="mt-3 text-sm text-red-600 hover:underline">ยกเลิกคำขอ</button>

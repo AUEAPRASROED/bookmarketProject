@@ -2,6 +2,7 @@
   "name": "bookmarket-web",
   "version": "1.0.0",
   "private": true,
+  "proxy": "http://localhost:4000",
   "dependencies": {
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
@@ -22,7 +23,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test"
+    "test": "react-scripts test",
+    "mock": "node mock/server.js"
   },
   "eslintConfig": {
     "extends": [

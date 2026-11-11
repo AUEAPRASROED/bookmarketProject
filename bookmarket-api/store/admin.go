@@ -13,6 +13,7 @@ type Stats struct {
     Requests          int64 `json:"requests"`
     RequestsPending   int64 `json:"requestsPending"`
     RequestsCompleted int64 `json:"requestsCompleted"`
+    Reviews           int64 `json:"reviews"`
 }
 
 // Stats รวมตัวเลขของทั้งเว็บในคำขอเดียว ให้หน้า Dashboard ยิงครั้งเดียวจบ (แบบ MovieHub)
@@ -28,8 +29,9 @@ func (s *Store) Stats(ctx context.Context) (Stats, error) {
                 (SELECT count(*) FROM categories),
                 (SELECT count(*) FROM purchase_requests),
                 (SELECT count(*) FROM purchase_requests WHERE status = 'pending'),
-                (SELECT count(*) FROM purchase_requests WHERE status = 'completed')`).
+                (SELECT count(*) FROM purchase_requests WHERE status = 'completed'),
+                (SELECT count(*) FROM seller_reviews)`).
         Scan(&st.Members, &st.Admins, &st.Books, &st.BooksAvailable, &st.BooksReserved, &st.BooksSold,
-            &st.Categories, &st.Requests, &st.RequestsPending, &st.RequestsCompleted)
+            &st.Categories, &st.Requests, &st.RequestsPending, &st.RequestsCompleted, &st.Reviews)
     return st, err
 }

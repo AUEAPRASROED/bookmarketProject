@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1" gradientTransform="rotate(15 .5 .5)">
+      <stop offset="0" stop-color="#f472b6"/><stop offset="1" stop-color="#831843"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="800" fill="url(#g)"/>
+  <circle cx="490" cy="110" r="140" fill="#ffffff" opacity="0.08"/>
+  <rect x="0" y="0" width="30" height="800" fill="#000000" opacity="0.18"/>
+  <rect x="30" y="0" width="4" height="800" fill="#ffffff" opacity="0.25"/>
+  <text x="60" y="88" font-family="'Prompt','Noto Sans Thai','Leelawadee UI','Tahoma','Loma',sans-serif" font-size="26" fill="#ffffff" opacity="0.85" letter-spacing="2">อื่น ๆ</text>
+  <rect x="60" y="106" width="80" height="6" rx="3" fill="#fbcfe8"/>
+  <text x="60" y="190" font-family="'Prompt','Noto Sans Thai','Leelawadee UI','Tahoma','Loma',sans-serif" font-size="64" font-weight="700" fill="#ffffff"><tspan x="60" dy="0">ทำอาหารง่าย</tspan><tspan x="60" dy="76">สำหรับหอพัก</tspan></text>
+  <g transform="translate(40 -20) rotate(-12 300 520) translate(300 520) scale(0.82) translate(-300 -520)"><g fill="#fbcfe8" opacity="0.75"><circle cx="111" cy="427" r="8"/><circle cx="208" cy="488" r="15"/><circle cx="305" cy="549" r="22"/><circle cx="402" cy="610" r="29"/><circle cx="499" cy="421" r="14"/><circle cx="136" cy="482" r="21"/><circle cx="233" cy="543" r="28"/><circle cx="330" cy="604" r="13"/><circle cx="427" cy="415" r="20"/><circle cx="524" cy="476" r="27"/><circle cx="161" cy="537" r="12"/><circle cx="258" cy="598" r="19"/></g><circle cx="272" cy="520" r="90" fill="none" stroke="#fff" stroke-width="8" opacity="0.6"/></g>
+  <rect x="34" y="700" width="566" height="100" fill="#000000" opacity="0.22"/>
+  <text x="60" y="760" font-family="'Prompt','Noto Sans Thai','Leelawadee UI','Tahoma','Loma',sans-serif" font-size="28" fill="#ffffff">เชฟแอน หม้อหุงข้าว</text>
+</svg>

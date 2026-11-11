@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1" gradientTransform="rotate(15 .5 .5)">
+      <stop offset="0" stop-color="#f87171"/><stop offset="1" stop-color="#7f1d1d"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="800" fill="url(#g)"/>
+  <circle cx="490" cy="110" r="140" fill="#ffffff" opacity="0.08"/>
+  <rect x="0" y="0" width="30" height="800" fill="#000000" opacity="0.18"/>
+  <rect x="30" y="0" width="4" height="800" fill="#ffffff" opacity="0.25"/>
+  <text x="60" y="88" font-family="'Prompt','Noto Sans Thai','Leelawadee UI','Tahoma','Loma',sans-serif" font-size="26" fill="#ffffff" opacity="0.85" letter-spacing="2">บริหารธุรกิจ</text>
+  <rect x="60" y="106" width="80" height="6" rx="3" fill="#fecaca"/>
+  <text x="60" y="190" font-family="'Prompt','Noto Sans Thai','Leelawadee UI','Tahoma','Loma',sans-serif" font-size="64" font-weight="700" fill="#ffffff"><tspan x="60" dy="0">การบัญชีขั้นต้น</tspan></text>
+  <g transform="translate(40 -20) rotate(-12 300 520) translate(300 520) scale(0.82) translate(-300 -520)"><g fill="#fecaca" opacity="0.8"><rect x="110" y="520" width="52" height="140" rx="8"/><rect x="190" y="540" width="52" height="120" rx="8"/><rect x="270" y="470" width="52" height="190" rx="8"/><rect x="350" y="420" width="52" height="240" rx="8"/><rect x="430" y="570" width="52" height="90" rx="8"/></g><polyline points="100,600 220,540 330,570 460,450 520,420" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" opacity="0.9"/></g>
+  <rect x="34" y="700" width="566" height="100" fill="#000000" opacity="0.22"/>
+  <text x="60" y="760" font-family="'Prompt','Noto Sans Thai','Leelawadee UI','Tahoma','Loma',sans-serif" font-size="28" fill="#ffffff">อ.ชนิดา งบดุล</text>
+</svg>

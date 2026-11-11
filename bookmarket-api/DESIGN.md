@@ -274,3 +274,62 @@ GitHub Actions `test.yml` รัน `npm test` และ `npm run build` ทุ�
 3. React: AuthContext + หน้า Guest → หน้า Member → หน้า Admin
 4. Unit Test ทั้งหมด → Deploy → ทดสอบบนโดเมนจริง
 5. Phase 8: README, Checklist ตาม Rubric, Script คลิป 15 นาที
+
+
+---
+
+## ส่วนเพิ่มเติม v2: ตะกร้าหนังสือ + รีวิวร้าน + ปรับหน้าตา
+
+ทุกอย่างใช้รูปแบบเดิมจากบทเรียน ไม่เพิ่ม library ใหม่
+
+| ฟังก์ชัน | อ้างอิงบทเรียน | วิธีทำ |
+|---|---|---|
+| ตะกร้าหนังสือ | wishlist ในใบงานด่าน 5 (`PUT/DELETE /api/me/wishlist/{movieId}`, ON CONFLICT) | ตาราง `cart_items` + `GET/PUT/DELETE /api/me/cart/{bookId}` ฝั่ง React ใช้ `CartContext` แบบเดียวกับ `AuthContext` |
+| รีวิวร้าน | reviews ในใบงานด่าน 4-5 (คนละครั้ง, 23505 → 409, ลบได้เมื่อเป็นเจ้าของหรือ admin) + votes (คะแนนเป็นช่วง) | ตาราง `seller_reviews` คะแนน 1-5 ดาว รีวิวได้เมื่อเคยซื้อขายกับร้านนั้นจนสถานะเป็น `completed` |
+| หน้าร้าน | Stats (ยิงครั้งเดียวได้ข้อมูลทั้งหน้า) | `GET /api/sellers/{id}` ตอบ `{seller, books, reviews}` |
+| หน้าตาเว็บ | Tailwind ใน MovieHub | ปกจำลองสีไล่ระดับ (`BookCover`), ดาว (`Stars`), hero, ไอคอนหมวด, การ์ดเงา |
+
+### ตารางใหม่
+
+```sql
+CREATE TABLE cart_items (
+    member_id  BIGINT       NOT NULL REFERENCES members (id) ON DELETE CASCADE,
+    book_id    BIGINT       NOT NULL REFERENCES books (id) ON DELETE CASCADE,
+    added_at   TIMESTAMPTZ  NOT NULL DEFAULT now(),
+    PRIMARY KEY (member_id, book_id)
+);
+CREATE TABLE seller_reviews (
+    id           BIGSERIAL     PRIMARY KEY,
+    seller_id    BIGINT        NOT NULL REFERENCES members (id) ON DELETE CASCADE,
+    reviewer_id  BIGINT        NOT NULL REFERENCES members (id) ON DELETE CASCADE,
+    rating       SMALLINT      NOT NULL CHECK (rating BETWEEN 1 AND 5),
+    text         VARCHAR(500),
+    created_at   TIMESTAMPTZ   NOT NULL DEFAULT now(),
+    CONSTRAINT uq_seller_reviews UNIQUE (seller_id, reviewer_id),
+    CONSTRAINT ck_no_self_review CHECK (seller_id <> reviewer_id)
+);
+```
+Supabase ที่สร้างไว้แล้ว: รัน `migrate-002-cart-reviews.sql` ครั้งเดียว
+
+### Endpoint ใหม่
+
+| Method | Path | ประตู | ตอบ |
+|---|---|---|---|
+| GET | `/api/me/cart` | login | 200 `{items}` (หนังสือรูปร่างเดียวกับ `/api/books`) |
+| PUT | `/api/me/cart/{bookId}` | login | 200 / 400 (หนังสือตัวเอง) / 404 |
+| DELETE | `/api/me/cart/{bookId}` | login | 204 |
+| GET | `/api/sellers/{id}` | - | 200 `{seller, books, reviews}` / 404 |
+| POST | `/api/sellers/{id}/reviews` | login | 201 / 400 (ดาวผิด, รีวิวตัวเอง) / 403 (ยังไม่เคยซื้อขายเสร็จ) / 409 (รีวิวแล้ว) |
+| DELETE | `/api/seller-reviews/{id}` | login (คนเขียน หรือ admin) | 204 / 404 |
+
+หนังสือทุกเล่มที่ตอบจาก API มี `seller.rating` และ `seller.reviewCount` ติดมา หน้า Dashboard มีตัวเลข `reviews`
+
+### หน้าใหม่
+
+| Path | หน้า | สิทธิ์ |
+|---|---|---|
+| `/me/cart` | ตะกร้า: ส่งคำขอทีละเล่มหรือทั้งหมด ส่งสำเร็จแล้วเอาออกจากตะกร้า | Member |
+| `/sellers/:id` | หน้าร้าน: คะแนน รีวิว หนังสือที่ขายอยู่ ฟอร์มรีวิว | ทุกคน (รีวิวต้อง login + ซื้อขายเสร็จแล้ว) |
+
+### เทสต์ใหม่
+`Cart.test.jsx` (โหลด / ส่งคำขอแล้วเอาออก / 409 / ว่าง) และ `SellerPage.test.jsx` (แสดงร้าน / ไม่มีสิทธิ์รีวิว / รีวิวแล้วคะแนนอัปเดต / Guest)

@@ -12,7 +12,7 @@ function StatCard({ label, value, to }) {
       <p className="mt-1 text-3xl font-semibold text-slate-900">{value}</p>
     </>
   );
-  const cls = 'rounded-xl border border-emerald-100 bg-white p-4';
+  const cls = 'rounded-2xl border border-slate-200 bg-white p-4 shadow-sm';
   return to ? <Link to={to} className={cls + ' block hover:border-emerald-300'}>{body}</Link> : <div className={cls}>{body}</div>;
 }
 
@@ -66,6 +66,7 @@ function AdminDashboard() {
           <StatCard label="คำขอทั้งหมด" value={stats.requests} to="/admin/requests" />
           <StatCard label="รอผู้ขายตอบ" value={stats.requestsPending} />
           <StatCard label="ซื้อขายเสร็จ" value={stats.requestsCompleted} />
+          <StatCard label="รีวิวร้าน" value={stats.reviews ?? 0} />
         </div>
       </section>
     </div>

@@ -4,3 +4,5 @@ ALTER TABLE public.members           ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.categories        ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.books             ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.purchase_requests ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.cart_items        ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.seller_reviews    ENABLE ROW LEVEL SECURITY;

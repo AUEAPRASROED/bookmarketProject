@@ -46,6 +46,7 @@ func main() {
     mux.HandleFunc("GET /api/categories", h.Categories)
     mux.HandleFunc("GET /api/books", h.ListBooks)
     mux.HandleFunc("GET /api/books/{id}", h.GetBook)
+    mux.HandleFunc("GET /api/sellers/{id}", h.Seller)                 // หน้าร้าน: ข้อมูลร้าน + หนังสือ + รีวิว
 
     // สมาชิก: ต้องมีตั๋ว เลขสมาชิกอ่านจากตั๋วเท่านั้น
     mux.HandleFunc("GET /api/me", login(h.Me))
@@ -59,6 +60,11 @@ func main() {
     mux.HandleFunc("DELETE /api/books/{id}", login(h.DeleteBook))    // เจ้าของ หรือ admin (ตรวจใน SQL)
     mux.HandleFunc("POST /api/books/{id}/requests", login(h.CreateRequest))
     mux.HandleFunc("PUT /api/requests/{id}/status", login(h.UpdateRequestStatus))
+    mux.HandleFunc("GET /api/me/cart", login(h.Cart))
+    mux.HandleFunc("PUT /api/me/cart/{bookId}", login(h.AddToCart))
+    mux.HandleFunc("DELETE /api/me/cart/{bookId}", login(h.RemoveFromCart))
+    mux.HandleFunc("POST /api/sellers/{id}/reviews", login(h.AddSellerReview))
+    mux.HandleFunc("DELETE /api/seller-reviews/{id}", login(h.DeleteSellerReview))   // คนเขียน หรือ admin
 
     // หลังบ้าน: ทุกเส้นทางใต้ /api/admin ผ่าน admin(...) ไม่มีข้อยกเว้น
     mux.HandleFunc("GET /api/admin/stats", admin(h.AdminStats))

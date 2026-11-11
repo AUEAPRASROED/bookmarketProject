@@ -17,6 +17,8 @@ var (
     ErrNotAvailable     = errors.New("book not available")
     ErrAlreadyRequested = errors.New("already requested")
     ErrBadTransition    = errors.New("bad transition")
+    ErrSelfReview       = errors.New("self review")
+    ErrNotBuyer         = errors.New("no completed purchase")
 )
 
 type Store struct {

@@ -89,6 +89,29 @@ export function setRequestStatus(requestId, status, token) {
   return apiFetch(`/api/requests/${requestId}/status`, { method: 'PUT', body: { status }, token });
 }
 
+// ---------- ตะกร้าหนังสือ (แบบ wishlist ในใบงานด่าน 5) ----------
+export async function getCart(token) {
+  const data = await apiFetch('/api/me/cart', { token });
+  return data.items;                                        // หนังสือรูปร่างเดียวกับ getBooks
+}
+export function addToCart(bookId, token) {
+  return apiFetch(`/api/me/cart/${bookId}`, { method: 'PUT', token });
+}
+export function removeFromCart(bookId, token) {
+  return apiFetch(`/api/me/cart/${bookId}`, { method: 'DELETE', token });           // 204 ได้ null
+}
+
+// ---------- หน้าร้าน + รีวิวร้าน ----------
+export function getSeller(sellerId) {
+  return apiFetch(`/api/sellers/${sellerId}`);              // { seller, books, reviews }
+}
+export function addSellerReview(sellerId, rating, text, token) {
+  return apiFetch(`/api/sellers/${sellerId}/reviews`, { method: 'POST', body: { rating, text }, token });
+}
+export function deleteSellerReview(reviewId, token) {
+  return apiFetch(`/api/seller-reviews/${reviewId}`, { method: 'DELETE', token });
+}
+
 // ---------- หลังบ้าน (ทุกตัวต้องแนบตั๋วของ admin ถ้าเป็น member Go ตอบ 403) ----------
 export function getAdminStats(token) {
   return apiFetch('/api/admin/stats', { token });
