@@ -6,7 +6,7 @@ import StatusBadge from '../components/StatusBadge';
 import { ErrorBox, Loading, ConfirmBox, btnPrimary } from '../components/admin/AdminStates';
 import { formatPrice, conditionLabel } from '../data/labels';
 
-// ประกาศของฉัน: ทุกสถานะ พร้อมปุ่มแก้ไข / ลบ (ลบต้องผ่านกล่องยืนยันก่อน)
+// สินค้าของฉัน: ทุกสถานะ พร้อมปุ่มแก้ไข / ลบ (ลบต้องผ่านกล่องยืนยันก่อน)
 function MyBooks() {
   const { token } = useAuth();
   const [books, setBooks] = useState([]);
@@ -50,7 +50,7 @@ function MyBooks() {
     <div className="mx-auto max-w-5xl px-4 py-10 md:px-6">
       <div className="mb-4 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold text-slate-900">ประกาศของฉัน</h1>
+          <h1 className="text-2xl font-semibold text-slate-900">สินค้าของฉัน</h1>
           {status === 'success' && <p className="text-sm text-slate-500">ทั้งหมด {books.length} เล่ม</p>}
         </div>
         <Link to="/me/books/new" className={btnPrimary}>+ ลงประกาศขาย</Link>

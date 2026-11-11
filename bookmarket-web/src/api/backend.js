@@ -58,7 +58,7 @@ export function getBook(bookId) {
   return apiFetch(`/api/books/${bookId}`);
 }
 
-// ---------- ประกาศของฉัน ----------
+// ---------- สินค้าของฉัน ----------
 export async function getMyBooks(token) {
   const data = await apiFetch('/api/me/books', { token });
   return data.items;
