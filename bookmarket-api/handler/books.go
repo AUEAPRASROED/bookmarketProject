@@ -35,8 +35,9 @@ func validateBook(in *store.BookInput) (code, message string) {
     default:
         return "BAD_CONDITION", "สภาพหนังสือต้องเป็น new, like_new, good หรือ fair"
     }
-    if in.ImageURL != nil && !strings.HasPrefix(*in.ImageURL, "http") {
-        return "BAD_IMAGE", "รูปต้องเป็น URL เต็ม (https://...)"
+    // รูปเป็น URL เต็ม หรือรูปที่อยู่ในเว็บเอง เช่น /covers/book-01.svg (ไฟล์ใน public/covers ของ React)
+    if in.ImageURL != nil && !strings.HasPrefix(*in.ImageURL, "http") && !strings.HasPrefix(*in.ImageURL, "/") {
+        return "BAD_IMAGE", "รูปต้องเป็น URL เต็ม (https://...) หรือรูปในเว็บ (/covers/...)"
     }
     return "", ""
 }

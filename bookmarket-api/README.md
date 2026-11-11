@@ -7,9 +7,11 @@ Backend ของระบบซื้อขายหนังสือมือ
 main.go        env, ต่อ DB, เส้นทางทั้งหมด, CORS, PORT
 auth/          bcrypt (password.go), ตั๋ว JWT (token.go), ชุดทดสอบตั๋วปลอม (token_test.go)
 mw/            RequireLogin / RequireRole (auth.go), CORS (cors.go), Logging (logging.go)
-handler/       รับคำขอ ตรวจข้อมูล แปลง error เป็นรหัส HTTP: auth, books, requests, admin
-store/         คุยกับฐานข้อมูลด้วย SQL + $1: members, books, requests, categories, admin
-schema.sql     สร้างตาราง 4 ตาราง      seed.sql  หมวดหมู่เริ่มต้น      rls.sql  เปิด RLS บน Supabase
+handler/       รับคำขอ ตรวจข้อมูล แปลง error เป็นรหัส HTTP: auth, books, requests, cart, sellers, admin
+store/         คุยกับฐานข้อมูลด้วย SQL + $1: members, books, requests, cart, reviews, categories, admin
+schema.sql     สร้างตาราง 6 ตาราง      seed.sql  หมวดหมู่เริ่มต้น      rls.sql  เปิด RLS บน Supabase
+seed-demo.sql  ข้อมูลตัวอย่าง: หนังสือ 40 เล่ม (8 หมวด x 5) พร้อมปก, สมาชิก 4 คน, คำขอซื้อ, ตะกร้า, รีวิว
+migrate-002-cart-reviews.sql  สำหรับ Supabase ที่รัน schema รุ่นแรก (4 ตาราง) ไปแล้ว: เพิ่มตารางตะกร้า + รีวิวร้าน
 smoke-test.sh  ทดสอบ API ทั้งระบบด้วย curl
 ```
 
@@ -29,6 +31,8 @@ ADMIN_EMAIL=... ADMIN_PASS=... ./smoke-test.sh   # รวมส่วน admin
 1. สร้างโปรเจกต์ใหม่ (Region เอเชีย) ตั้งรหัส DB เป็นตัวอักษรกับตัวเลขเท่านั้น
 2. กด Connect → **Session pooler** → Use IPv4 → URI (ต้องเป็น port 5432) ต่อท้ายด้วย `?sslmode=require` นี่คือ `DATABASE_URL`
 3. SQL Editor: วางเนื้อหา `schema.sql` → Run, `seed.sql` → Run, `rls.sql` → Run (ไฟล์พวกนี้ไม่มี `COPY` จึงวางใน SQL Editor ได้)
+   ถ้าเคยรัน schema รุ่นแรก (4 ตาราง) ไปแล้ว ให้รันแค่ `migrate-002-cart-reviews.sql`
+   อยากได้หนังสือตัวอย่าง 40 เล่ม รัน `seed-demo.sql` ต่อ (รันซ้ำได้ ไม่เกิดข้อมูลซ้ำ) บัญชีตัวอย่างรหัส `password1` ควรเปลี่ยน/ลบก่อนส่งงาน
 4. สมัครสมาชิกผ่านหน้าเว็บ 1 บัญชี แล้วตั้งเป็น admin คนแรก จากนั้น **ออกจากระบบแล้วเข้าใหม่**
    ```sql
    UPDATE members SET role = 'admin' WHERE email = 'อีเมลของคุณ';
@@ -39,7 +43,7 @@ ADMIN_EMAIL=... ADMIN_PASS=... ./smoke-test.sh   # รวมส่วน admin
 | ช่อง | ค่า |
 |---|---|
 | Language / Branch / Region | Go / main / Singapore |
-| Root Directory | (ว่าง ถ้า go.mod อยู่รากของ repo) |
+| Root Directory | `bookmarket-api` (repo เดียวมีทั้งสองโฟลเดอร์) |
 | Build Command | `go build -o app .` |
 | Start Command | `./app` |
 | Health Check Path | `/api/books` |
@@ -61,6 +65,10 @@ ADMIN_EMAIL=... ADMIN_PASS=... ./smoke-test.sh   # รวมส่วน admin
 | PUT / DELETE | `/api/books/{id}` | login (เจ้าของ หรือ admin ตรวจใน SQL) |
 | POST | `/api/books/{id}/requests` | login |
 | PUT | `/api/requests/{id}/status` | login (ผู้ขาย/ผู้ซื้อตามกติกาสถานะ) |
+| GET / PUT / DELETE | `/api/me/cart`, `/api/me/cart/{bookId}` | login |
+| GET | `/api/sellers/{id}` | สาธารณะ |
+| POST | `/api/sellers/{id}/reviews` | login (ต้องเคยซื้อขายกับร้านนี้เสร็จแล้ว) |
+| DELETE | `/api/seller-reviews/{id}` | login (คนเขียน หรือ admin) |
 | GET | `/api/admin/stats`, `/api/admin/books`, `/api/admin/requests`, `/api/admin/members` | admin |
 | POST / PUT / DELETE | `/api/admin/categories`, `/api/admin/categories/{id}` | admin |
 | PUT | `/api/admin/members/{id}/role` | admin |

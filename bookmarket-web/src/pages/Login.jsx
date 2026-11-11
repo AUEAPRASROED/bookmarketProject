@@ -27,7 +27,8 @@ function Login() {
   }
 
   return (
-    <div className="mx-auto max-w-sm px-4 py-12">
+    <div className="mx-auto max-w-md px-4 py-14">
+      <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
       <h1 className="text-2xl font-semibold text-slate-900">เข้าสู่ระบบ</h1>
       <form onSubmit={handleSubmit} className="mt-6 space-y-3">
         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="อีเมล" required className={inputClass} />
@@ -41,6 +42,7 @@ function Login() {
       <p className="mt-6 text-sm text-slate-500">
         ยังไม่มีบัญชี? <Link to="/register" className="text-emerald-600 hover:underline">สมัครสมาชิก</Link>
       </p>
+      </div>
     </div>
   );
 }

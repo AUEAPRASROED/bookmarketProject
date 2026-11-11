@@ -54,7 +54,9 @@ function BookForm() {
   if (form.author.trim() === '') problems.push('ต้องมีชื่อผู้แต่ง');
   if (form.categoryId === '') problems.push('ต้องเลือกหมวดหมู่');
   if (form.price === '' || Number.isNaN(price) || price < 0) problems.push('ราคาต้องเป็นตัวเลข 0 ขึ้นไป');
-  if (form.imageUrl.trim() !== '' && !form.imageUrl.trim().startsWith('http')) problems.push('รูปต้องเป็น URL ที่ขึ้นต้นด้วย http');
+  const image = form.imageUrl.trim();
+  const imageOk = image.startsWith('http') || image.startsWith('/');          // URL เต็ม หรือรูปในเว็บ เช่น /covers/book-01.svg
+  if (image !== '' && !imageOk) problems.push('รูปต้องเป็น URL ที่ขึ้นต้นด้วย http หรือ /covers/');
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -110,7 +112,7 @@ function BookForm() {
         <label className="block text-sm text-slate-600">URL รูปปก (ไม่บังคับ)
           <input name="imageUrl" value={form.imageUrl} onChange={change} placeholder="https://..." className={inputClass + ' mt-1'} />
         </label>
-        {form.imageUrl.trim().startsWith('http') && (
+        {image !== '' && imageOk && (
           <img src={form.imageUrl} alt="ตัวอย่างรูปปก" className="h-40 rounded-lg border border-slate-200 object-cover" />
         )}
 

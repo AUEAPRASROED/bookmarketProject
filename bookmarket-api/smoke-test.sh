@@ -85,7 +85,32 @@ check "ซื้อขายเสร็จ"             200 "$(code PUT /api/re
 check "หนังสือเป็น sold"         sold "$(body GET /api/books/$BOOK | field '["status"]')"
 check "ยกเลิกหลังเสร็จไม่ได้"      409 "$(code PUT /api/requests/$R3/status "$B" '{"status":"cancelled"}')"
 
-echo "4) สิทธิ์ admin"
+echo "4) ตะกร้า + รีวิวร้าน"
+SID=$(body GET /api/me "$S" | field '["id"]')
+BOOK2=$(body POST /api/books "$S" "{\"title\":\"Physics $RUN\",\"author\":\"Serway\",\"condition\":\"good\",\"price\":200,\"categoryId\":$CAT}" | field '["id"]')
+check "Guest ใส่ตะกร้าไม่ได้"       401 "$(code PUT /api/me/cart/$BOOK2)"
+check "ใส่หนังสือตัวเองลงตะกร้า"     400 "$(code PUT /api/me/cart/$BOOK2 "$S")"
+check "ใส่ตะกร้าเล่มที่ไม่มี"         404 "$(code PUT /api/me/cart/999999999 "$B")"
+check "ใส่ตะกร้า"                 200 "$(code PUT /api/me/cart/$BOOK2 "$B")"
+check "ใส่ซ้ำได้ผลเหมือนเดิม"        200 "$(code PUT /api/me/cart/$BOOK2 "$B")"
+check "ตะกร้ามี 1 เล่ม"            1 "$(body GET /api/me/cart "$B" | field '["items"].__len__()')"
+check "ตะกร้าคนอื่นไม่เห็น"          0 "$(body GET /api/me/cart "$O" | field '["items"].__len__()')"
+check "เอาออกจากตะกร้า"            204 "$(code DELETE /api/me/cart/$BOOK2 "$B")"
+check "ตะกร้าว่างแล้ว"              0 "$(body GET /api/me/cart "$B" | field '["items"].__len__()')"
+check "Guest ดูหน้าร้าน"           200 "$(code GET /api/sellers/$SID)"
+check "ร้านที่ไม่มี"                404 "$(code GET /api/sellers/999999999)"
+check "Guest รีวิวไม่ได้"           401 "$(code POST /api/sellers/$SID/reviews "" '{"rating":5}')"
+check "ยังไม่เคยซื้อ รีวิวไม่ได้"      403 "$(code POST /api/sellers/$SID/reviews "$O" '{"rating":5}')"
+check "รีวิวร้านตัวเองไม่ได้"         400 "$(code POST /api/sellers/$SID/reviews "$S" '{"rating":5}')"
+check "ดาวเกิน 5"                400 "$(code POST /api/sellers/$SID/reviews "$B" '{"rating":6}')"
+RV=$(body POST /api/sellers/$SID/reviews "$B" '{"rating":4,"text":"นัดรับตรงเวลา"}' | field '["id"]')
+check "ซื้อเสร็จแล้ว รีวิวได้"        200 "$([ -n "$RV" ] && echo 200 || echo 000)"
+check "รีวิวซ้ำ"                  409 "$(code POST /api/sellers/$SID/reviews "$B" '{"rating":5}')"
+check "หน้าร้านนับรีวิว"            1 "$(body GET /api/sellers/$SID | field '["seller"]["reviewCount"]')"
+check "หนังสือมีคะแนนร้านติดมา"      1 "$(body GET /api/books/$BOOK2 | field '["seller"]["reviewCount"]')"
+check "คนอื่นลบรีวิวไม่ได้"          404 "$(code DELETE /api/seller-reviews/$RV "$O")"
+
+echo "5) สิทธิ์ admin"
 check "member เข้า /api/admin"   403 "$(code GET /api/admin/stats "$S")"
 check "ไม่มีตั๋วเข้า /api/admin"  401 "$(code GET /api/admin/stats)"
 if [ -n "$ADMIN_EMAIL" ]; then
@@ -99,6 +124,7 @@ if [ -n "$ADMIN_EMAIL" ]; then
   check "ลบหมวดที่มีหนังสือ"        409 "$(code DELETE /api/admin/categories/$CAT "$A")"
   check "admin ลบหมวดว่าง"        204 "$(code DELETE /api/admin/categories/$CID "$A")"
   check "admin ลบประกาศของคนอื่น"   204 "$(code DELETE /api/books/$BOOK "$A")"
+  check "admin ลบรีวิวที่ไม่เหมาะสม"  204 "$(code DELETE /api/seller-reviews/$RV "$A")"
   OID=$(body GET /api/me "$O" | field '["id"]')
   check "admin ลบสมาชิก"          204 "$(code DELETE /api/admin/members/$OID "$A")"
   SID=$(body GET /api/me "$S" | field '["id"]'); BID=$(body GET /api/me "$B" | field '["id"]')

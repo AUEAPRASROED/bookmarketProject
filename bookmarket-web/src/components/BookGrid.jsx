@@ -4,9 +4,9 @@ import BookCard from './BookCard';
 function BookGrid({ books, status, error, onRetry, emptyText = 'ไม่พบหนังสือที่ตรงกับเงื่อนไข' }) {
   if (status === 'loading') {
     return (
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4" aria-label="กำลังโหลด">
+      <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4" aria-label="กำลังโหลด">
         {Array.from({ length: 8 }, (_, i) => (
-          <div key={i} className="animate-pulse overflow-hidden rounded-xl border border-emerald-100 bg-white">
+          <div key={i} className="animate-pulse overflow-hidden rounded-2xl border border-slate-200 bg-white">
             <div className="aspect-[3/4] bg-slate-100" />
             <div className="space-y-2 p-3">
               <div className="h-4 w-3/4 rounded bg-slate-100" />
@@ -20,7 +20,7 @@ function BookGrid({ books, status, error, onRetry, emptyText = 'ไม่พบ�
 
   if (status === 'error') {
     return (
-      <div className="rounded-xl border border-red-200 bg-red-50 p-8 text-center">
+      <div className="rounded-2xl border border-red-200 bg-red-50 p-8 text-center">
         <p className="font-medium text-red-700">โหลดข้อมูลไม่สำเร็จ</p>
         <p className="mt-1 text-sm text-red-500">{error?.message}</p>
         {onRetry && (
@@ -34,11 +34,16 @@ function BookGrid({ books, status, error, onRetry, emptyText = 'ไม่พบ�
   }
 
   if (books.length === 0) {
-    return <p className="rounded-xl border border-dashed border-slate-300 py-16 text-center text-slate-400">{emptyText}</p>;
+    return (
+      <div className="rounded-2xl border border-dashed border-slate-300 bg-white py-16 text-center">
+        <p className="text-4xl">📭</p>
+        <p className="mt-2 text-slate-500">{emptyText}</p>
+      </div>
+    );
   }
 
   return (
-    <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+    <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
       {books.map(b => <BookCard key={b.id} book={b} />)}
     </div>
   );

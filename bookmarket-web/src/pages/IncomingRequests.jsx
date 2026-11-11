@@ -84,7 +84,7 @@ function IncomingRequests() {
       {status === 'success' && requests.length > 0 && (
         <ul className="space-y-3">
           {requests.map(r => (
-            <li key={r.id} className="rounded-xl border border-emerald-100 bg-white p-4" data-testid={`request-${r.id}`}>
+            <li key={r.id} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm" data-testid={`request-${r.id}`}>
               <div className="flex flex-wrap items-start justify-between gap-2">
                 <div>
                   <Link to={`/books/${r.book.id}`} className="font-medium text-slate-900 hover:text-emerald-600">{r.book.title}</Link>

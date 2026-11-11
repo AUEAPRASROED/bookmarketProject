@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1" gradientTransform="rotate(0 .5 .5)">
+      <stop offset="0" stop-color="#94a3b8"/><stop offset="1" stop-color="#0f172a"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="800" fill="url(#g)"/>
+  <circle cx="520" cy="90" r="140" fill="#ffffff" opacity="0.08"/>
+  <rect x="0" y="0" width="30" height="800" fill="#000000" opacity="0.18"/>
+  <rect x="30" y="0" width="4" height="800" fill="#ffffff" opacity="0.25"/>
+  <text x="60" y="88" font-family="'Prompt','Noto Sans Thai','Leelawadee UI','Tahoma','Loma',sans-serif" font-size="26" fill="#ffffff" opacity="0.85" letter-spacing="2">วิศวกรรมศาสตร์</text>
+  <rect x="60" y="106" width="80" height="6" rx="3" fill="#e2e8f0"/>
+  <text x="60" y="190" font-family="'Prompt','Noto Sans Thai','Leelawadee UI','Tahoma','Loma',sans-serif" font-size="54" font-weight="700" fill="#ffffff"><tspan x="60" dy="0">กลศาสตร์วิศวกรรม</tspan><tspan x="60" dy="64">สถิตยศาสตร์</tspan></text>
+  <g transform="translate(-30 10) rotate(0 300 520) translate(300 520) scale(1) translate(-300 -520)"><g fill="#e2e8f0" opacity="0.85"><rect x="228" y="392" width="32" height="40" rx="6" transform="rotate(0 244 520)"/><rect x="228" y="392" width="32" height="40" rx="6" transform="rotate(30 244 520)"/><rect x="228" y="392" width="32" height="40" rx="6" transform="rotate(60 244 520)"/><rect x="228" y="392" width="32" height="40" rx="6" transform="rotate(90 244 520)"/><rect x="228" y="392" width="32" height="40" rx="6" transform="rotate(120 244 520)"/><rect x="228" y="392" width="32" height="40" rx="6" transform="rotate(150 244 520)"/><rect x="228" y="392" width="32" height="40" rx="6" transform="rotate(180 244 520)"/><rect x="228" y="392" width="32" height="40" rx="6" transform="rotate(210 244 520)"/><rect x="228" y="392" width="32" height="40" rx="6" transform="rotate(240 244 520)"/><rect x="228" y="392" width="32" height="40" rx="6" transform="rotate(270 244 520)"/><rect x="228" y="392" width="32" height="40" rx="6" transform="rotate(300 244 520)"/><rect x="228" y="392" width="32" height="40" rx="6" transform="rotate(330 244 520)"/><circle cx="244" cy="520" r="100"/></g><circle cx="244" cy="520" r="42" fill="#0f172a" opacity="0.55"/></g>
+  <rect x="34" y="700" width="566" height="100" fill="#000000" opacity="0.22"/>
+  <text x="60" y="760" font-family="'Prompt','Noto Sans Thai','Leelawadee UI','Tahoma','Loma',sans-serif" font-size="28" fill="#ffffff">รศ.ดร.ประยุทธ แรงสมดุล</text>
+</svg>

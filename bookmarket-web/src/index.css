@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 body {
-  @apply bg-emerald-50/30 text-slate-800 antialiased;
+  @apply bg-slate-50 text-slate-800 antialiased;
 }
